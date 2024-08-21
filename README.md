@@ -1,0 +1,1 @@
+Boilerplate for nodejs-express-mongodb apps
