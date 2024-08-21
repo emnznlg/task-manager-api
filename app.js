@@ -7,8 +7,9 @@ const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 
-const exampleRouter = require("./routes/exampleRoutes");
+const taskRouter = require("./routes/taskRoutes");
 const globalErrorHandler = require("./controller/errorController");
+const AppError = require("./utils/appError");
 
 dotenv.config({ path: "./config.env" });
 
@@ -34,11 +35,12 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-app.use("/api/v1/example", exampleRouter);
+app.use("/api/v1/task", taskRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
+
 app.use(globalErrorHandler);
 
 mongoose.connect(process.env.DATABASE).then(() => {
